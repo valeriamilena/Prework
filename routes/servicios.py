@@ -72,3 +72,10 @@ def reporte_por_usuario(correo: str):
         "detalle": detalle,
     }
 
+@router.delete("/servicios/{nombre}")
+def eliminar_servicio(nombre: str):
+    servicio = next((s for s in servicios_db if s["nombre"] == nombre), None)
+    if not servicio:
+        raise HTTPException(status_code=404, detail="Servicio no encontrado")
+    servicios_db.remove(servicio)
+    return {"mensaje": "Servicio eliminado", "servicio": servicio}
